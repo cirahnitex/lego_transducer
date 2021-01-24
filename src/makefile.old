@@ -1,0 +1,242 @@
+# ==============================================================================
+# Example make file
+# ==============================================================================
+#
+# This is a good file to start with when you decide to start a
+# module. Just copy it to your module and tweak it to your needs
+# (replace *example* with whatever suits your module. Make sure you
+# verify that the variables in steps 1--5 have values that reflect
+# your module accurately.
+#
+# To build a typical C++ module, type the following commands in your
+# moduels source directory:
+#
+# > make depend
+# > make debug
+# > make
+# > make test
+#
+# This makes the dependecy file, a debug version of your module and a
+# productyion grade version of your module respectively. When you are
+# ready to share the module, type:
+#
+# > make release
+#
+# ==============================================================================
+# $Id: Makefile.example,v 1.12 2018/08/16 08:12:37 masaers Exp $
+# ==============================================================================
+
+
+
+# ------------------------------------------------------------------------------
+# Boilerplate stuff
+# ------------------------------------------------------------------------------
+# Include common variable definitions.
+include $(GROUP_TOOLS)/common/Makefile.common.variables
+
+
+# === [ STEP 1 ] ===============================================================
+# List your header files here (if any)
+#
+# For each generated header, there should be a corresponding .xml file.
+# ==============================================================================
+
+EXTERNAL_HEADERS = \
+	include/event_emitter.hpp \
+	include/generate_type_consistent_tuple.hpp \
+	include/lego_boolean_operations.hpp \
+	include/lego_guard.hpp \
+	include/lego_initialize.hpp \
+	include/lego_io_operations.hpp \
+	include/lego_list_operations.hpp \
+	include/lego_primitive_types.hpp \
+	include/lego_serialization_helper.hpp \
+	include/lego_tensor.hpp \
+	include/lego_tensor_operations.hpp \
+	include/lego_training_pipeline.hpp \
+	include/lego_transducer.hpp \
+	include/parallel_array_map.hpp \
+	include/transducer_dataset.hpp \
+    include/transducer_instance.hpp \
+    include/transducer_model.hpp \
+    include/transducer_optimizer.hpp \
+    include/transducer_structure.hpp \
+    include/transducer_typed_value.hpp \
+    include/wallclock_timer.hpp \
+
+
+GENERATED_HEADERS = \
+
+
+# ===[ STEP 2 ] ================================================================
+# List your labrary sources and the name of the resulting library here
+# (if applicable).
+#
+# All object files resulting from compiling the library sources will
+# be packaged into a library with the given name (typically the name
+# of the module).
+# ==============================================================================
+
+LIBRARY_NAME    = lego
+LIBRARY_SOURCES = \
+	backprop_trainable_parameter.cpp \
+	bilinear_model.cpp \
+	boolean_operations_impl.cpp \
+	lambda_transducer_model.cpp \
+	const_value_model.cpp \
+	dense_model.cpp \
+	dropout_model.cpp \
+	dynet_computation_graph.cpp \
+	embedding_table_model.cpp \
+	generic_rnn_model.cpp \
+	input_placeholder_transducer.cpp \
+	io_operations_impl.cpp \
+	lego_boolean_operations.cpp \
+	lego_initialize.cpp \
+	lego_io_operations.cpp \
+	lego_list_operations.cpp \
+	lego_tensor.cpp \
+	lego_tensor_operations.cpp \
+	lego_training_pipeline.cpp \
+	list_operations_impl.cpp \
+	rnn_cells.cpp \
+	scope_collector_guard.cpp \
+	scoped_environment.cpp \
+	symbol_id_converter_model.cpp \
+	tbd_transducer.cpp \
+	tensor_operations_impl.cpp \
+	transducer_base.cpp \
+	transducer_dataset.cpp \
+	transducer_instance.cpp \
+	transducer_model.cpp \
+	transducer_optimizer.cpp \
+	transducer_structure.cpp \
+	transducer_typed_value.cpp \
+	transducer_variant.cpp \
+
+# === [ STEP 3 ] ===============================================================
+# List the names of your programs here.
+#   Exported programs are released.
+#   Internal programs are never released.
+#   Test programs are assumed to be unit test programs that
+#     (a) write to stderr only when something goes wrong, and
+#     (b) are typically named the same as the header _test.
+#   Exported scripts are assumed to be
+#     (a) runnable as is, and
+#     (b) platform independent.
+# ==============================================================================
+
+EXPORTED_PROGRAM_NAMES = \
+
+INTERNAL_PROGRAM_NAMES = \
+	main \
+
+TEST_PROGRAM_NAMES = \
+
+EXPORTED_SCRIPT_NAMES = \
+
+
+# === [ STEP 4 ] ===============================================================
+# List any additional paths/flags/libraries needed for a build.
+# ==============================================================================
+
+ADDITIONAL_INCLUDES  += -I$(GROUP_TOOLS)/opt/dynet_hltc_fork/x86_64__Linux__CentOS_7.2.1511__gcc7/include -I$(GROUP_TOOLS)/opt/eigen-3.3.5/$(PLATFORM_TYPE)/include -I$(GROUP_TOOLS)/opt/boost_1_62_0/$(PLATFORM_TYPE)/include -I$(GROUP_TOOLS)/opt/include/cereal_opt
+ADDITIONAL_LDFLAGS   += -L$(GROUP_LIBOPTDIR) -L$(GROUP_TOOLS)/opt/dynet_hltc_fork/x86_64__Linux__CentOS_7.2.1511__gcc7/lib
+ADDITIONAL_CXXFLAGS  +=
+ADDITIONAL_LIBRARIES += -pthread -lrt -ldynet
+
+
+# === [ STEP 5] ================================================================
+# Go down to the bottom and truncate the log so that the your new
+# makefile starts with a fresh log!
+# ==============================================================================
+
+# === [ DONE ] =================================================================
+
+
+#
+# Include common target definitions
+#
+include $(GROUP_TOOLS)/common/Makefile.common.targets
+
+
+# ==============================================================================
+#  $Log: Makefile.example,v $
+#  Revision 1.12  2018/08/16 08:12:37  masaers
+#  Updated to reflect compatibility issues with MacOS.
+#
+#  Revision 1.11  2018/07/03 05:59:30  masaers
+#  Added support for generated headers.
+#  Removed INTERNAL_HEADERS.
+#
+#  Revision 1.10  2016/06/10 07:48:08  masaers
+#  Added a scripts to the mix.
+#
+#  Revision 1.9  2016/02/26 07:59:38  masaers
+#  Added a dir guard to the library recipie.
+#
+#  Revision 1.8  2016/02/19 03:51:04  masaers
+#  Removed MACHINE_TYPE definition (default set in
+#    Makefile.common.variable as it should).
+#  Tweaked formatting of EXTERNAL_HEADERS.
+#
+#  Revision 1.7  2014/01/29 02:27:31  masaers
+#  Changed the program order to facilitate early failure. It now compiles
+#  programs in test-internal-exported order instead of
+#  exported-internal-test order. The assumption is that neither imported
+#  nor exported programs will work if the tests do not, and that all
+#  internal programs have to work before any exported programs are worth
+#  compiling.
+#
+#  Added more comments.
+#
+#  Made the program lists into a more easily modifiable format (one
+#  program per line, lines can be moved around freely).
+#
+#  Added a step to truncate the log message (the history of the example
+#  file is not the history of your new module)
+#
+#  Revision 1.6  2013/06/10 05:47:46  masaers
+#  Refactored to handle test programs.
+#
+#  Revision 1.5  2013/06/04 03:03:16  masaers
+#  Fixed a logic bug resulting in a circular definition.
+#
+#  Revision 1.4  2013/06/03 09:51:11  masaers
+#  Major change.
+#
+#    Revision 1.3  2011/07/11 09:02:12  masaers
+#    Now build library when building all.
+#    Some cosmetic changes.
+#
+#    Revision 1.2  2011/07/04 12:52:02  vskaddanki
+#    C++ extension changed to .cpp.
+#
+#    Revision 1.1  2011/07/02 09:30:15  vskaddanki
+#    Initial revision
+#
+#    Revision 1.8  1996/07/23 19:47:12  stolcke
+#    include std srilm libraries in LIBRARIES
+#
+#    Revision 1.7  1996/06/10 05:31:27  stolcke
+#    parametrize ar command
+#
+#    Revision 1.6  1995/11/13 23:29:16  stolcke
+#    added SRILM, MACHINE_TYPE setting
+#
+#    Revision 1.5  1995/06/24 21:19:52  stolcke
+#    run ar output through c++filt
+#
+#    Revision 1.4  1995/06/19 02:08:21  stolcke
+#    added C++ support
+#
+#    Revision 1.3  1994/12/03 23:50:19  decipher
+#    Updated to use new release-* targets.
+#
+# Revision 1.2  1994/03/09  02:34:00  psi
+# Updated to work better with "make depend".
+#
+# Revision 1.1  1993/09/09  20:15:31  decipher
+# Initial revision
+#
+# ==============================================================================
