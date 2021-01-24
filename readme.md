@@ -20,5 +20,7 @@ Lego library solves the problem of defining dynamic neural networks by providing
 ### Getting started
 
 [Lego library basics](tutorials/basics.md)
+
 [Example: Building an XOR model](tutorials/examples/xor/index.md)
+
 [Example: Building a naive RNN POS tagger model](tutorials/examples/rnn_diy/index.md)
