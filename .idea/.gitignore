@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../../../:\cl\dev\dynet_hltc_fork\src\dynet\dynet\.idea/dataSources/
+/../../../../../../:\cl\dev\lego\lego\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/

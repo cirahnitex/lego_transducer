@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dynet.iml" filepath="$PROJECT_DIR$/.idea/dynet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lego.iml" filepath="$PROJECT_DIR$/.idea/lego.iml" />
     </modules>
   </component>
 </project>

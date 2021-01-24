@@ -3,7 +3,7 @@ project(lego)
 set(CMAKE_CXX_STANDARD 17)
 set(BUILD_SHARED_LIBS 1)
 
-set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/eigen/include")
+set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/eigen-3.3.5/include")
 
 add_subdirectory(dynet_hltc_fork)
 
@@ -61,7 +61,7 @@ endif()
 install(DIRECTORY src/include/
         DESTINATION "include")
 
-install(DIRECTORY cereal/include/
+install(DIRECTORY cereal-1.3.0/include/
         DESTINATION "include")
 
 set(INTERNAL_PROGRAM_SOURCES src/main src/examples/xor_demo.cpp src/examples/dynamic_xor_demo.cpp src/examples/lstm_demo.cpp src/examples/rnn_diy_demo.cpp src/examples/recursion_demo.cpp)
@@ -82,5 +82,5 @@ foreach(PROGRAM_SOURCE ${INTERNAL_PROGRAM_SOURCES})
     target_link_libraries(${TARGET_NAME} ${PROJECT_NAME} dynet)
 endforeach()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cereal/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cereal-1.3.0/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dynet_hltc_fork)
