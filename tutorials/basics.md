@@ -109,7 +109,7 @@ As we can see, our desired transducer can be constructed using the lambda syntax
 
 #### Drawbacks of lambda syntax and how to fix it
 
-However, constructing a transducer from a user-supplied C++ lambda function can be challenging implemtational-wise. One naive implementation is to store the C++ lamdba function in the transducer, so that later when applying the transducer on concrete values, the C++ lambda function is invoked to compute the output. However, this implementation has severe drawbacks:
+Constructing a transducer from a user-supplied C++ lambda function can be challenging implemtational-wise. One naive implementation is to store the C++ lamdba function in the transducer, so that later when applying the transducer on concrete values, the C++ lambda function is invoked to compute the output. However, this implementation has severe drawbacks:
   * The transducer only holds the C++ lamdba function as a black box without any information about the internal topology, which makes automatic computation of derivatives using chain rule impossible.
   * The execution of the C++ lambda function cannot be optimized. In the above example, the computation of f1 and f2 could potentially be parallelized but cannot be done.
   * The C++ lambda function cannot be serialized into a file which means this transducer cannot be saved/loaded.
