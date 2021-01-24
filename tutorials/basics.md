@@ -105,7 +105,7 @@ transducer_model h = transducer_model([&](const value_t& x1, const valule_t& x2)
 });
 ```
 
-As we can see, our desired transducer can be constructed using the lambda syntax easily.
+As we can see, our desired transducer can be constructed using the lambda syntax easily. However, this is just an initial draft of the lambda syntax. In the next section you will see its improved finalized syntax.
 
 #### Drawbacks of lambda syntax and how to fix it
 
@@ -131,6 +131,8 @@ transducer_model h = transducer_model([&](const value_placeholder& x1, const val
   return g(y1, y2);
 });
 ```
+
+So this is the finalized syntax of defining a lambda transducer.
 
 #### Nested lambda transducers
 
