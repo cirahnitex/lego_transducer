@@ -61,6 +61,11 @@ endif()
 install(DIRECTORY src/include/
         DESTINATION "include")
 
+install(TARGETS ${PROJECT_NAME}
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin)
+
 install(DIRECTORY cereal-1.3.0/include/
         DESTINATION "include")
 

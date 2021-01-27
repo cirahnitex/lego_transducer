@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="hltc00" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="csl2">
         <serverdata>
@@ -19,7 +19,7 @@
       <paths name="hltc00">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/dev/lego/lego" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
