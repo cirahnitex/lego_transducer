@@ -961,3 +961,12 @@ value_t tensor_transpose_op::transduce(const value_t& x) {
 std::string tensor_transpose_op::default_name() const {
   return "transpose";
 }
+
+value_t squared_distance_op::transduce(const value_t& x, const value_t& y) {
+
+  return (value_t)dynet::squared_distance(x.as_symbolic_tensor(), y.as_symbolic_tensor());
+}
+
+std::string squared_distance_op::default_name() const {
+  return "tensor_squared_distance";
+}

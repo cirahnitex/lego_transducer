@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="hltc00" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="hltc00" filePermissions="436" folderPermissions="509" autoUploadExternalChanges="true">
     <serverData>
       <paths name="csl2">
         <serverdata>
@@ -21,6 +21,9 @@
           <mappings>
             <mapping deploy="/dev/lego/lego" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="wsl (cc0b3c6a-8700-4345-ab6c-19c58a67507d)">
@@ -31,5 +34,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

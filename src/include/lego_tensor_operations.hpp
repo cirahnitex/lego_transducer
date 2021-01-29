@@ -339,7 +339,7 @@ namespace tg {
   /**
    * \brief Square root
    * \details Calculates elementwise square root
-   * \param x the input tensor
+   * \param x The input tensor
    * \return the output tensor
    */
   extern transducer_model sqrt;
@@ -353,7 +353,26 @@ namespace tg {
    */
   extern transducer_model pow;
 
+  /**
+   * \brief The L2 norm of a tensor
+   *
+   * \f$\sqrt{\sum_i x_i^2}\f$.
+   *
+   * \param x The tensor to compute norm
+   * \return The L2 norm of the tensor
+   */
   extern transducer_model tensor_l2_norm;
+
+  /**
+   * \brief The squared distance between two tensors
+   *
+   * \f$\sum_i (x_i-y_i)^2\f$
+   *
+   * \param x The first tensor
+   * \param y The second tensor
+   * \return the squared distance between these two tensors
+   */
+  extern transducer_model tensor_squared_distance;
 
   /**
    * \brief Tensor concatenation
