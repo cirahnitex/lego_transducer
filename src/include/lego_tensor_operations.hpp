@@ -633,6 +633,9 @@ namespace tg {
 
   /**
    * \brief Reshape a tensor
+   *
+   * You can specify -1 as one of the axis length to indicate automatic axis length induction.
+   *
    * \param tensor The tensor to reshape
    * \param shape The output tensor shape
    * \return The reshaped tensor

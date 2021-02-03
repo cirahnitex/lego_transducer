@@ -9,15 +9,8 @@ using namespace tg;
 int main() {
   lego_initialize();
 
-
-  transducer_model tmp([&](){
-
-    auto x = value_placeholder::constant(tensor_t({1,2,3,4,5,6}, {2,3}));
-
-    return tensor_reshape(x, {1, -1});
-  });
-
-  cout << tmp() << endl;
+  value_t x(tensor_t({1,2,3,4,5,6}, {1, 6})); // value holding a 1x6 tensor
+  value_t y = tensor_reshape(x, {2, -1}); // a value holding a 2x3 tensor
 
   return 0;
 }
