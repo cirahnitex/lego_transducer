@@ -15,12 +15,20 @@ tg::value_placeholder tg::tensor_concat(const std::vector<value_placeholder>& te
   return model.apply(tensors);
 }
 
+tg::value_t tg::tensor_concat(const std::vector<value_t>& tensors, unsigned long axis) {
+  auto model = tg::transducer_model(make_shared<transducer_variant>(tg::n_ary_concat_op_static_axis(axis)));
+  return model.apply(tensors);
+}
+
 tg::value_placeholder tg::tensor_concat(const tg::value_placeholder& tensors, unsigned long axis) {
   auto model = tg::transducer_model(make_shared<transducer_variant>(tg::tensor_concat_op_static_axis(axis)));
   return model(tensors);
 }
 
-
+tg::value_t tg::tensor_concat(const tg::value_t& tensors, unsigned long axis) {
+  auto model = tg::transducer_model(make_shared<transducer_variant>(tg::tensor_concat_op_static_axis(axis)));
+  return model(tensors);
+}
 
 namespace tg {
   tg::transducer_model max_index_of_tensor1d(make_shared<transducer_variant>(tg::max_index_of_tensor1d_op()));
@@ -120,12 +128,25 @@ tg::value_placeholder tg::axis_sum(const tg::value_placeholder& x, const std::ve
   return model(x);
 }
 
+tg::value_t tg::axis_sum(const tg::value_t& x, const std::vector<unsigned long>& axes) {
+  transducer_model model(make_shared<transducer_variant>(tensor_axis_sum_op(axes)));
+  return model(x);
+}
+
 tg::value_placeholder tg::axis_average(const tg::value_placeholder& x, const std::vector<unsigned long>& axes) {
+  transducer_model model(make_shared<transducer_variant>(tensor_axis_average_op(axes)));
+  return model(x);
+}
+tg::value_t tg::axis_average(const tg::value_t& x, const std::vector<unsigned long>& axes) {
   transducer_model model(make_shared<transducer_variant>(tensor_axis_average_op(axes)));
   return model(x);
 }
 
 tg::value_placeholder tg::axis_std(const tg::value_placeholder& x, const std::vector<unsigned long>& axes) {
+  transducer_model model(make_shared<transducer_variant>(tensor_axis_std_op(axes)));
+  return model(x);
+}
+tg::value_t tg::axis_std(const tg::value_t& x, const std::vector<unsigned long>& axes) {
   transducer_model model(make_shared<transducer_variant>(tensor_axis_std_op(axes)));
   return model(x);
 }
@@ -151,8 +172,16 @@ tg::value_placeholder tg::axis_max(const tg::value_placeholder& x, unsigned long
   transducer_model model(make_shared<transducer_variant>(tensor_axis_max_op(axis)));
   return model(x);
 }
+tg::value_t tg::axis_max(const tg::value_t& x, unsigned long axis) {
+  transducer_model model(make_shared<transducer_variant>(tensor_axis_max_op(axis)));
+  return model(x);
+}
 
 tg::value_placeholder tg::axis_min(const tg::value_placeholder& x, unsigned long axis) {
+  transducer_model model(make_shared<transducer_variant>(tensor_axis_min_op(axis)));
+  return model(x);
+}
+tg::value_t tg::axis_min(const tg::value_t& x, unsigned long axis) {
   transducer_model model(make_shared<transducer_variant>(tensor_axis_min_op(axis)));
   return model(x);
 }
@@ -186,6 +215,9 @@ namespace tg {
 value_placeholder tg::tensor_select(const value_placeholder& tensor, unsigned long idx, unsigned long axis) {
   return tensor_select(tensor, value_placeholder::constant(idx), value_placeholder::constant(axis));
 }
+value_t tg::tensor_select(const value_t& tensor, unsigned long idx, unsigned long axis) {
+  return tensor.select(idx, axis);
+}
 
 value_placeholder
 tg::tensor_select(const value_placeholder& tensor, const value_placeholder& idx, const value_placeholder& axis) {
@@ -198,6 +230,12 @@ tg::tensor_slice(const value_placeholder& tensor, unsigned long start, unsigned 
   return tensor_slice(tensor, value_placeholder::constant(start), value_placeholder::constant(end), value_placeholder::constant(axis));
 }
 
+value_t
+tg::tensor_slice(const value_t& tensor, unsigned long start, unsigned long end, unsigned long axis) {
+  return tensor.slice(start, end, axis);
+}
+
+
 value_placeholder
 tg::tensor_slice(const value_placeholder& tensor, const value_placeholder& start, const value_placeholder& end,
                  const value_placeholder& axis) {
@@ -207,6 +245,11 @@ tg::tensor_slice(const value_placeholder& tensor, const value_placeholder& start
 
 value_placeholder tg::tensor_split(const value_placeholder& tensor, unsigned long axis) {
   return tensor_split(tensor, value_placeholder::constant(axis));
+}
+
+value_t tg::tensor_split(const value_t& tensor, unsigned long axis) {
+  static transducer_model model(make_shared<transducer_variant>(split_op()));
+  return model(tensor, value_t(axis));
 }
 
 value_placeholder tg::tensor_split(const value_placeholder& tensor, const value_placeholder& axis) {
@@ -219,12 +262,27 @@ value_placeholder tg::tensor_reshape(const value_placeholder& tensor, tensor_sha
   return model(tensor);
 }
 
+value_t tg::tensor_reshape(const value_t& tensor, tensor_shape_t shape) {
+  transducer_model model(make_shared<transducer_variant>(tensor_reshape_op(std::move(shape))));
+  return model(tensor);
+}
+
 value_placeholder tg::tensor_transpose(const value_placeholder& tensor, std::vector<unsigned int> axes) {
   transducer_model model(make_shared<transducer_variant>(tensor_transpose_op(std::move(axes))));
   return model(tensor);
 }
 
+value_t tg::tensor_transpose(const value_t& tensor, std::vector<unsigned int> axes) {
+  transducer_model model(make_shared<transducer_variant>(tensor_transpose_op(std::move(axes))));
+  return model(tensor);
+}
+
 value_placeholder tg::softmax(const value_placeholder& x, unsigned long axis) {
+  transducer_model model(make_shared<transducer_variant>(softmax_op(axis)));
+  return model(x);
+}
+
+value_t tg::softmax(const value_t& x, unsigned long axis) {
   transducer_model model(make_shared<transducer_variant>(softmax_op(axis)));
   return model(x);
 }

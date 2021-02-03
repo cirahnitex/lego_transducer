@@ -59,6 +59,9 @@ value_placeholder tg::list_slice(const value_placeholder& list, const value_plac
 value_placeholder tg::list_slice(const value_placeholder& list, unsigned long start, unsigned long end) {
   return list_slice(list, value_placeholder::constant(start), value_placeholder::constant(end));
 }
+value_t tg::list_slice(const value_t& list, unsigned long start, unsigned long end) {
+  return list.slice(start, end);
+}
 
 value_placeholder tg::list_select_many(const value_placeholder& list, const value_placeholder& indices) {
   static transducer_model op(make_shared<transducer_variant>(list_select_many_op()));
@@ -69,4 +72,7 @@ value_placeholder tg::list_select_many(const value_placeholder& list, const std:
   return list_select_many(list, value_placeholder::constant(indices));
 }
 
+value_t tg::list_select_many(const value_t& list, const std::vector<unsigned long>& indices) {
+  return list.select_many(indices);
+}
 

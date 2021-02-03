@@ -156,6 +156,7 @@ namespace tg {
    * \return The result of computing softmax
    */
   value_placeholder softmax(const value_placeholder& x, unsigned long axis = 0);
+  value_t softmax(const value_t& x, unsigned long axis = 0);
 
   /**
    * \brief log softmax
@@ -385,6 +386,7 @@ namespace tg {
    * \return The concatenated tensor
    */
   value_placeholder tensor_concat(const std::vector<value_placeholder>& tensors, unsigned long axis = 0);
+  value_t tensor_concat(const std::vector<value_t>& tensors, unsigned long axis = 0);
 
   /**
    * \brief Tensor concatenation
@@ -399,6 +401,7 @@ namespace tg {
    * \return The concatenated tensor
    */
   value_placeholder tensor_concat(const value_placeholder& tensors, unsigned long axis = 0);
+  value_t tensor_concat(const value_t& tensors, unsigned long axis = 0);
 
 
   /**
@@ -485,6 +488,7 @@ namespace tg {
    * \return a model which outputs the summed tensor
    */
   value_placeholder axis_sum(const value_placeholder& x, const std::vector<unsigned long>& axes);
+  value_t axis_sum(const value_t& x, const std::vector<unsigned long>& axes);
 
   /**
    * \brief Average elements in a tensor along one or more axes
@@ -493,6 +497,7 @@ namespace tg {
    * \return a The averaged tensor
    */
   value_placeholder axis_average(const value_placeholder& x, const std::vector<unsigned long>& axes);
+  value_t axis_average(const value_t& x, const std::vector<unsigned long>& axes);
 
   /**
    * \brief Compute standard deviation of elements in a tensor along one or more axes
@@ -501,6 +506,7 @@ namespace tg {
    * \return a The standard deviation tensor
    */
   value_placeholder axis_std(const value_placeholder& x, const std::vector<unsigned long>& axes);
+  value_t axis_std(const value_t& x, const std::vector<unsigned long>& axes);
 
   /**
    * \brief Max out a tensor through an axis.
@@ -510,6 +516,7 @@ namespace tg {
    * \return The maximized tensor
    */
   value_placeholder axis_max(const value_placeholder& x, unsigned long axis);
+  value_t axis_max(const value_t& x, unsigned long axis);
 
   /**
    * \brief Min out a tensor through an axis.
@@ -519,6 +526,7 @@ namespace tg {
    * \return The minimized tensor
    */
   value_placeholder axis_min(const value_placeholder& x, unsigned long axis);
+  value_t axis_min(const value_t& x, unsigned long axis);
 
   /**
    * \brief Random uniform tensor generator
@@ -573,6 +581,7 @@ namespace tg {
    * \return The selected sub-tensor
    */
   value_placeholder tensor_select(const value_placeholder& tensor, unsigned long idx, unsigned long axis);
+  value_t tensor_select(const value_t& tensor, unsigned long idx, unsigned long axis);
 
   value_placeholder tensor_select(const value_placeholder& tensor, const value_placeholder& idx, const value_placeholder& axis);
 
@@ -598,6 +607,7 @@ namespace tg {
    * \return The sliced tensor
    */
   value_placeholder tensor_slice(const value_placeholder& tensor, unsigned long start, unsigned long end, unsigned long axis);
+  value_t tensor_slice(const value_t& tensor, unsigned long start, unsigned long end, unsigned long axis);
 
   value_placeholder tensor_slice(const value_placeholder& tensor, const value_placeholder& start, const value_placeholder& end, const value_placeholder& axis);
 
@@ -618,6 +628,7 @@ namespace tg {
    * \return The split tensors as a list.
    */
   value_placeholder tensor_split(const value_placeholder& tensor, unsigned long axis);
+  value_t tensor_split(const value_t& tensor, unsigned long axis);
   value_placeholder tensor_split(const value_placeholder& tensor, const value_placeholder& axis);
 
   /**
@@ -627,6 +638,7 @@ namespace tg {
    * \return The reshaped tensor
    */
   value_placeholder tensor_reshape(const value_placeholder& tensor, tensor_shape_t shape);
+  value_t tensor_reshape(const value_t& tensor, tensor_shape_t shape);
 
   /**
    * \brief Transpose a matrix, or more generally, shuffle the axes of a tensor.
@@ -641,6 +653,7 @@ namespace tg {
    * \return
    */
   value_placeholder tensor_transpose(const value_placeholder& tensor, std::vector<unsigned> axes = {1, 0});
+  value_t tensor_transpose(const value_t& tensor, std::vector<unsigned> axes = {1, 0});
   /** @} */
 }
 

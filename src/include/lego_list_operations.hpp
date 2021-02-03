@@ -147,7 +147,7 @@ namespace tg {
    * \return The slice of the list
    */
   value_placeholder list_slice(const value_placeholder& list, unsigned long start, unsigned long end);
-
+  value_t list_slice(const value_t& list, unsigned long start, unsigned long end);
   value_placeholder list_slice(const value_placeholder& list, const value_placeholder& start, const value_placeholder& end);
 
   /**
@@ -157,6 +157,7 @@ namespace tg {
    * \return A list containing selected items
    */
   value_placeholder list_select_many(const value_placeholder& list, const std::vector<unsigned long>& indices);
+  value_t list_select_many(const value_t& list, const std::vector<unsigned long>& indices);
   value_placeholder list_select_many(const value_placeholder& list, const value_placeholder& indices);
   /// @}
 }
