@@ -53,8 +53,8 @@ string tg::dense_model::default_name() const {
 
 
 tg::dense_model::dense_model(unsigned long input_size, unsigned long output_size, bool has_bias) :
-  dim_in_m(input_size), dim_out_m(output_size), W_m({output_size, input_size}), b_m() {
-  if (has_bias) b_m = backprop_trainable_bias_parameter({output_size});
+  dim_in_m(input_size), dim_out_m(output_size), W_m({(long)output_size, (long)input_size}), b_m() {
+  if (has_bias) b_m = backprop_trainable_bias_parameter({(long)output_size});
 }
 
 
@@ -96,9 +96,9 @@ n_ary_dense_model::n_ary_dense_model(std::vector<unsigned long> input_sizes, uns
   dim_ins_m(move(input_sizes)), dim_out_m{output_size}, Ws_m(), b_m(){
   Ws_m.reserve(dim_ins_m.size());
   for(auto&& input_size:dim_ins_m) {
-    Ws_m.push_back(backprop_trainable_parameter({output_size, input_size}));
+    Ws_m.push_back(backprop_trainable_parameter(make_tensor_shape(output_size, input_size)));
   }
-  if (has_bias) b_m = backprop_trainable_bias_parameter({output_size});
+  if (has_bias) b_m = backprop_trainable_bias_parameter(make_tensor_shape(output_size));
 }
 
 string n_ary_dense_model::default_name() const {

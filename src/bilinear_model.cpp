@@ -9,17 +9,17 @@ using namespace std;
 
 bilinear_model::bilinear_model(unsigned long input_0_size, unsigned long input_1_size, unsigned long output_size, bool with_bias)
 : input_0_size_m(input_0_size), input_1_size_m(input_1_size), output_size_m(output_size),
-  W({input_0_size * output_size, input_1_size}){
-  if(with_bias) b = backprop_trainable_bias_parameter({output_size});
+  W(make_tensor_shape(input_0_size * output_size, input_1_size)){
+  if(with_bias) b = backprop_trainable_bias_parameter(make_tensor_shape(output_size));
 }
 
 value_t bilinear_model::transduce(const value_t& in0, const value_t& in1) {
   auto&& x = in0.as_symbolic_tensor();
   auto&& y = in1.as_symbolic_tensor();
-  if(in0.tensor_shape() != tensor_shape_t({input_0_size_m}) || in1.tensor_shape() != tensor_shape_t({input_1_size_m})) {
+  if(in0.tensor_shape() != make_tensor_shape(input_0_size_m) || in1.tensor_shape() != make_tensor_shape(input_1_size_m)) {
     stringstream ss;
     ss << "Failed to apply "<<default_name()<<": Expected input shapes "
-       << print_tensor_shape(tensor_shape_t({input_0_size_m})) << " and " << print_tensor_shape(tensor_shape_t({input_1_size_m}))
+       << print_tensor_shape(make_tensor_shape(input_0_size_m)) << " and " << print_tensor_shape(make_tensor_shape(input_1_size_m))
        << ", got "
        << print_tensor_shape(in0.tensor_shape()) << " and "<< print_tensor_shape(in1.tensor_shape()) << ".";
     throw_with_nested(std::runtime_error(ss.str()));
@@ -37,17 +37,17 @@ std::string bilinear_model::default_name() const {
 
 biaffine_model::biaffine_model(unsigned long input_0_size, unsigned long input_1_size, unsigned long output_size,
                                bool with_bias)
- : input_0_size_m(input_0_size), input_1_size_m(input_1_size), output_size_m(output_size), W_bilinear_m({input_0_size * output_size, input_1_size}), W_linear0_m({output_size, input_0_size}), W_linear1_m({output_size, input_1_size}) {
-  if(with_bias) b_m = backprop_trainable_bias_parameter({output_size});
+ : input_0_size_m(input_0_size), input_1_size_m(input_1_size), output_size_m(output_size), W_bilinear_m(make_tensor_shape(input_0_size * output_size, input_1_size)), W_linear0_m(make_tensor_shape(output_size, input_0_size)), W_linear1_m(make_tensor_shape(output_size, input_1_size)) {
+  if(with_bias) b_m = backprop_trainable_bias_parameter(make_tensor_shape(output_size));
 }
 
 value_t biaffine_model::transduce(const value_t& in0, const value_t& in1) {
   auto&& x = in0.as_symbolic_tensor();
   auto&& y = in1.as_symbolic_tensor();
-  if(in0.tensor_shape() != tensor_shape_t({input_0_size_m}) || in1.tensor_shape() != tensor_shape_t({input_1_size_m})) {
+  if(in0.tensor_shape() != make_tensor_shape(input_0_size_m) || in1.tensor_shape() != make_tensor_shape(input_1_size_m)) {
     stringstream ss;
     ss << "Failed to apply "<<default_name()<<": Expected input shapes "
-       << print_tensor_shape(tensor_shape_t({input_0_size_m})) << " and " << print_tensor_shape(tensor_shape_t({input_1_size_m}))
+       << print_tensor_shape(make_tensor_shape(input_0_size_m)) << " and " << print_tensor_shape(make_tensor_shape(input_1_size_m))
        << ", got "
        << print_tensor_shape(in0.tensor_shape()) << " and "<< print_tensor_shape(in1.tensor_shape()) << ".";
     throw_with_nested(std::runtime_error(ss.str()));

@@ -5,13 +5,19 @@ using namespace std;
 using namespace tg;
 
 
+
 int main() {
   lego_initialize();
 
-  value_t x(tensor_t({1,2,3}));
-  value_t y(tensor_t({0,0,0}));
 
-  cout << tensor_squared_distance(x, y) << endl;
+  transducer_model tmp([&](){
+
+    auto x = value_placeholder::constant(tensor_t({1,2,3,4,5,6}, {2,3}));
+
+    return tensor_reshape(x, {1, -1});
+  });
+
+  cout << tmp() << endl;
 
   return 0;
 }

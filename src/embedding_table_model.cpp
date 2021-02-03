@@ -21,7 +21,7 @@ tg::value_t tg::embedding_table_model::transduce(const tg::value_t& in0) {
 }
 
 tg::embedding_table_model::embedding_table_model(unsigned long embedding_size, unsigned long num_entries) :
-  num_entries_m(num_entries), embedding_size_m(embedding_size), lookup_table_m(num_entries, {embedding_size}) {
+  num_entries_m(num_entries), embedding_size_m(embedding_size), lookup_table_m(num_entries, {(long)embedding_size}) {
 
 }
 
@@ -32,7 +32,7 @@ string tg::embedding_table_model::default_name() const {
 embedding_table_model::embedding_table_model(unsigned long embedding_size,
                                              const std::vector<std::vector<float>>& pretrained_embeddings) :
                                              num_entries_m(pretrained_embeddings.size()), embedding_size_m(embedding_size),
-                                             lookup_table_m(num_entries_m, {embedding_size}){
+                                             lookup_table_m(num_entries_m, {(long)embedding_size}){
   for(unsigned long i=0; i<pretrained_embeddings.size(); ++i) {
     auto&& pretrained_embedding = pretrained_embeddings[i];
     if(pretrained_embedding.empty()) continue;

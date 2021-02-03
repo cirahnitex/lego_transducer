@@ -8,7 +8,7 @@ using namespace std;
 using namespace tg;
 
 dynet::Dim tg::to_dynet_dim(const tg::tensor_shape_t& dim) {
-  return dynet::Dim(vector<long>{dim.begin(), dim.end()});
+  return dynet::Dim(dim);
 }
 
 tensor_shape_t tg::from_dynet_dim(const dynet::Dim& dynet_dim) {
@@ -21,7 +21,7 @@ tensor_shape_t tg::from_dynet_dim(const dynet::Dim& dynet_dim) {
 }
 
 unsigned long tg::tensor_num_values(const tg::tensor_shape_t& dim) {
-  unsigned ret = 1;
+  unsigned long ret = 1;
   for (auto&& axis:dim) {
     ret *= axis;
   }
@@ -105,5 +105,5 @@ tensor_t::tensor_t(std::vector<float> values, tensor_shape_t shape):values(move(
   }
 }
 
-tensor_t::tensor_t(std::vector<float> values):tensor_t(move(values), {values.size()}) {}
+tensor_t::tensor_t(std::vector<float> values):tensor_t(move(values), {(long)values.size()}) {}
 

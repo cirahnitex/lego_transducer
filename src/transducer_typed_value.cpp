@@ -271,7 +271,7 @@ std::ostream& tg::operator<<(std::ostream& os, const value_t& x) {
 
 }
 
-std::vector<unsigned long> value_t::tensor_shape() const {
+tensor_shape_t value_t::tensor_shape() const {
 
   if(!v) throw_with_nested(std::runtime_error("Cannot get tensor dim from value of type " + type_name()));
 

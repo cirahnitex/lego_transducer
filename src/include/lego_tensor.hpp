@@ -30,7 +30,18 @@ namespace tg {
   /**
    * \brief Represents the shape of a tensor
    */
-  using tensor_shape_t = std::vector<unsigned long>;
+  using tensor_shape_t = std::vector<long>;
+
+  /**
+   * \brief Constructs a tensor shape
+   *
+   * \param xs The size of each axis
+   * \return The tensor shape
+   */
+  template<typename ...Args>
+  inline tensor_shape_t make_tensor_shape(Args&& ...xs) {
+    return tensor_shape_t{((long)xs)...};
+  }
 
   /**
    * \brief Express a tensor shape into a human-readible string

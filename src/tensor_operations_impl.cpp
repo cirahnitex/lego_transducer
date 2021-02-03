@@ -946,8 +946,34 @@ string tg::cmult_op::default_name() const {
   return "operator*";
 }
 
-value_t tensor_reshape_op::transduce(const value_t& x) {
-  return (value_t)dynet::reshape(x.as_symbolic_tensor(), to_dynet_dim(output_shape_m));
+value_t tensor_reshape_op::transduce(const value_t& _x) {
+  auto&& x = _x.as_symbolic_tensor();
+
+  unsigned long num_elems = 1;
+  tg::tensor_shape_t output_shape(output_shape_m);
+  long* auto_axis = nullptr;
+  for(auto& axis:output_shape) {
+    if(axis == -1) {
+      auto_axis = &axis;
+    }
+    else {
+      num_elems *= axis;
+    }
+  }
+
+  unsigned long x_num_elems = x.dim().batch_size();
+  if(auto_axis != nullptr) {
+    *auto_axis = x_num_elems / num_elems;
+    num_elems *= (*auto_axis);
+  }
+
+  if(x_num_elems != num_elems) {
+    stringstream ss;
+    ss << "Cannot reshape a tensor of shape " << print_tensor_shape(from_dynet_dim(x.dim())) << " into shape "<<print_tensor_shape(output_shape_m);
+    throw std::runtime_error(ss.str());
+  }
+
+  return (value_t)dynet::reshape(x, to_dynet_dim(output_shape));
 }
 
 std::string tensor_reshape_op::default_name() const {
