@@ -657,6 +657,42 @@ namespace tg {
    */
   value_placeholder tensor_transpose(const value_placeholder& tensor, std::vector<unsigned> axes = {1, 0});
   value_t tensor_transpose(const value_t& tensor, std::vector<unsigned> axes = {1, 0});
+
+
+  /**
+   * \brief The general version of positional encoding used in Transformer
+   *
+   * Normally, a neural network is good at dealing with numbers whose values are in a small range, like [-1, 1], representing some true/false, black/grey/white things instead of precise quantities.
+   *
+   * In order for a neural network to better understand a number to its precise quantity, the number need to be encoded as an embedding vector. You need to specify
+   *  - range: Your number must be within a specific range, beyond which the embedding vector will not effectively capture
+   *  - epsilon: the smallest differences between two numbers, beyond which the embedding vectors between two numbers is too insignificant from the point of view of a neural network.
+   *
+   * The embedding size is up to you, but if the embedding size is too small, it may affect the predictive power of the embedding vector. You can call tg::numerical_encoder_recommemded_D to compute a recommended embedding size.
+   *
+   * Note that the positional encoding used in Transformer is a special case, where
+   *  - range = 10000*PI, which is more than enough for the purpose of indexing tokens in a sentence
+   *  - epsilon = pow(10000,1/256), which roughly equals to 1
+   *  - embedding size = 512
+   *
+   * \param range The range of input numbers
+   * \param eps The smallest differences between input numbers
+   * \param D The output embedding size
+   * \return A transducer that computes numerical encoding of
+   */
+  transducer_model make_numerical_encoder(float range, float eps, unsigned long D);
+
+  /**
+   * \brief Compute a recommended embedding size for your numerical encoder
+   *
+   * This function gives you a good recommendation of numerical encoder embedding size. Of course, giving more dimensions than recommemded is always better if you have the computational resources. However, giving less dimensions than recommended is at your own risk.
+   *
+   * \param range The range of input numbers to numerical encode
+   * \param eps The smallest differences between input numbers
+   * \return A recommended embedding size.
+   */
+  unsigned long numerical_encoder_recommemded_D(float range, float eps);
+
   /** @} */
 }
 

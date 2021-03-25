@@ -15,13 +15,16 @@ int main() {
 
   cout << "initialize complete" << endl;
 
-  tg::value_t x(tensor_t({1,2,3}));
 
-  transducer_model my_double([&](const value_placeholder& x) {
-    return x + x;
-  });
+  auto numerical_encoder = make_numerical_encoder(10, 1, 8);
 
-  cout << my_double(x) << endl;
+  for(unsigned i = 0; i< 10; ++i) {
+    tg::value_t x(tensor_t({(float)i}));
+
+    cout << numerical_encoder(x) << endl;
+  }
+
+
 
   return 0;
 }

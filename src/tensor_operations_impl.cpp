@@ -996,3 +996,24 @@ value_t squared_distance_op::transduce(const value_t& x, const value_t& y) {
 std::string squared_distance_op::default_name() const {
   return "tensor_squared_distance";
 }
+
+value_t numerical_encoding_op::transduce(const value_t& in0) {
+  auto x = in0.as_symbolic_tensor();
+  auto _omegas = dynet::input(*dynet_computation_graph::p(), dynet::Dim({(unsigned)omegas.size()}), omegas);
+  auto omega_x = _omegas * x;
+  return value_t(dynet::reshape(dynet::transpose(dynet::concatenate({dynet::sin(omega_x), dynet::cos(omega_x)}, 1)), {(unsigned)omegas.size() * 2}));
+}
+
+numerical_encoding_op::numerical_encoding_op(float range, float eps, unsigned long D) {
+  unsigned long K = D / 2;
+  if(2 * K != D) throw std::runtime_error("Numerical encoding require dimension to be an odd numbner. Got: " + std::to_string(D));
+  double alpha = std::pow(double(range) / (M_PI * eps), 1.0/double(K - 1));
+  omegas.resize(K, 0);
+  for(unsigned long k = 0; k < K; ++k) {
+    omegas[k] = 1/(eps * std::pow(alpha, k));
+  }
+}
+
+std::string numerical_encoding_op::default_name() const {
+  return "numerical_encoding";
+}

@@ -992,6 +992,26 @@ namespace tg {
 
     std::string default_name() const;
   };
+
+  class numerical_encoding_op {
+    std::vector<float> omegas;
+  public:
+    numerical_encoding_op() = default;
+    numerical_encoding_op(const numerical_encoding_op&) = default;
+    numerical_encoding_op(numerical_encoding_op&&) noexcept = default;
+    numerical_encoding_op& operator=(const numerical_encoding_op&) = default;
+    numerical_encoding_op& operator=(numerical_encoding_op&&) noexcept = default;
+    numerical_encoding_op(float range, float eps, unsigned long D);
+
+    template<typename Archive>
+    void serialize(Archive& ar) {
+      ar(omegas);
+    }
+
+    value_t transduce(const value_t& x);
+
+    std::string default_name() const;
+  };
 }
 
 

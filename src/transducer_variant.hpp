@@ -90,7 +90,7 @@ namespace tg {
 
       biaffine_model,
 
-      n_ary_concat_op_static_axis, list_concat_op, composed_transducer_model, list_filter_op, tensor_reshape_op, tensor_transpose_op, softmax_op, exp_op, tensor_l2_norm_op, squared_distance_op
+      n_ary_concat_op_static_axis, list_concat_op, composed_transducer_model, list_filter_op, tensor_reshape_op, tensor_transpose_op, softmax_op, exp_op, tensor_l2_norm_op, squared_distance_op, numerical_encoding_op
     >;
 
     variant_t v;
