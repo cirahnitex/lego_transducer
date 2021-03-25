@@ -43,7 +43,6 @@ simple_sgd_optimizer optimizer(0.01);
 training_pipeline trainer(&optimizer);
 trainer.set_num_epochs(1000);
 
-
 trainer.train(loss_fn, training_set);
 
 // save the trained model into a file

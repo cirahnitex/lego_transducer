@@ -8,8 +8,24 @@
 #include <string>
 #include <dynet/dynet.h>
 using namespace tg;
+using namespace std;
 
-void tg::lego_initialize(unsigned int memory, bool disable_gpu, tg::ProfilingVerbosity profiling) {
+std::string get_dynet_device_name(tg::Device_ID device_id) {
+  if(device_id == CPU) return "CPU";
+  int gpu_idx = (int)device_id - 1;
+  return "GPU:"+to_string(gpu_idx);
+}
+
+std::string get_dynet_devices_cmdarg(const std::vector<tg::Device_ID>& devices) {
+  stringstream ss;
+  ss << get_dynet_device_name(devices.front());
+  for (long i = 1; i < devices.size(); ++i) {
+    ss << "," << get_dynet_device_name(devices[i]);
+  }
+  return ss.str();
+}
+
+void tg::lego_initialize(unsigned int memory, const std::vector<tg::Device_ID>& devices, tg::ProfilingVerbosity profiling) {
   static bool is_initialized{false};
   if(is_initialized) throw std::runtime_error("lego_initialize() cannot be called twice");
   is_initialized = true;
@@ -22,8 +38,9 @@ void tg::lego_initialize(unsigned int memory, bool disable_gpu, tg::ProfilingVer
     "",
     "--dynet-mem=" + quater_mem + "," + quater_mem + "," + quater_mem + "," + quater_mem,
     "--dynet-autobatch=1",
-    "--dynet-profiling=" + std::to_string((unsigned)profiling)};
-  if(disable_gpu) arguments.emplace_back("--dynet-devices=CPU");
+    "--dynet-profiling=" + std::to_string((unsigned)profiling)
+  };
+  if(!devices.empty()) arguments.emplace_back("--dynet-devices=" + get_dynet_devices_cmdarg(devices));
 
   std::vector<char *> argv;
   for (const auto& arg : arguments)

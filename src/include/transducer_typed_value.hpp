@@ -604,13 +604,13 @@ namespace tg {
   };
 
   /**
-   * \brief Ensure that a tensor is not NaN or Inf
+   * \brief Ensure that a tensor does not contain NaN or Inf
    *
    * Throws an exception if it does.
    *
-   * \param tensor The tensor to ensure
+   * \param values The values of the tensor to ensure
    */
-  void block_nan_or_inf(const dynet::Tensor& tensor);
+  void block_nan_or_inf(const std::vector<float>& values);
 
   /**
    * \brief Ensure that a float value is not NaN or Inf

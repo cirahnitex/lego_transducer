@@ -37,16 +37,15 @@ void tg::block_nan_or_inf(float value) {
   }
 }
 
-void tg::block_nan_or_inf(const dynet::Tensor& tensor) {
-  auto size = tensor.d.size();
-  for(unsigned i=0; i<size; ++i) {
-    block_nan_or_inf(tensor.v[i]);
+void tg::block_nan_or_inf(const std::vector<float>& values) {
+  for(auto&& v:values) {
+    block_nan_or_inf(v);
   }
 }
 
 tg::value_t::value_t(const symbolic_tensor_t& x) : v(make_shared<varient_t>(x)) {
   if(immediate_computation_guard::is_guarded()) {
-    block_nan_or_inf(dynet_computation_graph::p()->forward(x));
+    block_nan_or_inf(dynet::as_vector(dynet_computation_graph::p()->forward(x)));
   }
 }
 
@@ -480,8 +479,9 @@ void value_t::evaluate() {
     for(auto&& var:expr_holders) {
       auto& expr = get<symbolic_tensor_t>(*var);
       auto dynet_tensor = dynet_computation_graph::p()->incremental_forward(expr);
-      block_nan_or_inf(dynet_tensor);
-      *var = tensor_t(dynet::as_vector(dynet_tensor), from_dynet_dim(expr.dim()));
+      auto vec = dynet::as_vector(dynet_tensor);
+      block_nan_or_inf(vec);
+      *var = tensor_t(vec, from_dynet_dim(expr.dim()));
     }
     return;
   }
@@ -497,9 +497,8 @@ void value_t::evaluate() {
 
   // evaluate the concatenated tensor
   auto dynet_tensor = dynet_computation_graph::p()->incremental_forward(concatenated);
-  block_nan_or_inf(dynet_tensor);
   auto concatenated_val = dynet::as_vector(dynet_tensor);
-
+  block_nan_or_inf(concatenated_val);
 
   // reconstruct back each individual tensors by slicing
   // and replace the symbolic tensor with the reconstructed tensor

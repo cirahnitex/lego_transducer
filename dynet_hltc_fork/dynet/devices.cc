@@ -188,11 +188,11 @@ Device_CPU::Device_CPU(int my_id, const DeviceMempoolSizes & mbs, bool shared) :
 
 Device_CPU::~Device_CPU() {}
 
-  std::shared_ptr<AlignedMemoryPool> Device_CPU::create_pool(size_t initial_cap) {
-    return std::make_shared<AlignedMemoryPool>("CPU memory",initial_cap, &cpu_mem);
-  }
+std::shared_ptr<AlignedMemoryPool> Device_CPU::create_pool(size_t initial_cap) {
+  return std::make_shared<AlignedMemoryPool>("CPU memory",initial_cap, &cpu_mem);
+}
 
-  DeviceManager::DeviceManager() {}
+DeviceManager::DeviceManager() {}
 
 DeviceManager::~DeviceManager() {
   clear();
