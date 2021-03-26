@@ -995,20 +995,23 @@ namespace tg {
 
   class numerical_encoding_op {
     std::vector<float> omegas;
+    float center_value;
   public:
     numerical_encoding_op() = default;
     numerical_encoding_op(const numerical_encoding_op&) = default;
     numerical_encoding_op(numerical_encoding_op&&) noexcept = default;
     numerical_encoding_op& operator=(const numerical_encoding_op&) = default;
     numerical_encoding_op& operator=(numerical_encoding_op&&) noexcept = default;
-    numerical_encoding_op(float range, float eps, unsigned long D);
+    numerical_encoding_op(float min_val, float max_val, float eps, unsigned long D);
 
     template<typename Archive>
     void serialize(Archive& ar) {
-      ar(omegas);
+      ar(omegas, center_value);
     }
 
     value_t transduce(const value_t& x);
+
+    float inverse_op(const std::vector<float>& embedding);
 
     std::string default_name() const;
   };

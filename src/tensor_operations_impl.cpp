@@ -999,15 +999,23 @@ std::string squared_distance_op::default_name() const {
 
 value_t numerical_encoding_op::transduce(const value_t& in0) {
   auto x = in0.as_symbolic_tensor();
-  auto _omegas = dynet::input(*dynet_computation_graph::p(), dynet::Dim({(unsigned)omegas.size()}), omegas);
-  auto omega_x = _omegas * x;
-  return value_t(dynet::reshape(dynet::transpose(dynet::concatenate({dynet::sin(omega_x), dynet::cos(omega_x)}, 1)), {(unsigned)omegas.size() * 2}));
+
+  if(x.dim().batch_size() == 1) {
+    auto _omegas = dynet::input(*dynet_computation_graph::p(), dynet::Dim({(unsigned)omegas.size()}), omegas);
+    auto omega_x = _omegas * x;
+    return value_t(dynet::reshape(dynet::transpose(dynet::concatenate({dynet::sin(omega_x), dynet::cos(omega_x)}, 1)), {(unsigned)omegas.size() * 2}));
+  }
+  else { // Compute the inverse embedding if the input is an embedding vector
+
+    return value_t(inverse_op(dynet::as_vector(dynet_computation_graph::p()->incremental_forward(x))));
+  }
+
 }
 
-numerical_encoding_op::numerical_encoding_op(float range, float eps, unsigned long D) {
+numerical_encoding_op::numerical_encoding_op(float min_val, float max_val, float eps, unsigned long D):center_value((min_val + max_val) / 2) {
   unsigned long K = D / 2;
   if(2 * K != D) throw std::runtime_error("Numerical encoding require dimension to be an odd numbner. Got: " + std::to_string(D));
-  double alpha = std::pow(double(range) / (M_PI * eps), 1.0/double(K - 1));
+  double alpha = std::pow(double(max_val - min_val) / (M_PI * eps), 1.0/double(K - 1));
   omegas.resize(K, 0);
   for(unsigned long k = 0; k < K; ++k) {
     omegas[k] = 1/(eps * std::pow(alpha, k));
@@ -1016,4 +1024,29 @@ numerical_encoding_op::numerical_encoding_op(float range, float eps, unsigned lo
 
 std::string numerical_encoding_op::default_name() const {
   return "numerical_encoding";
+}
+
+float numerical_encoding_op::inverse_op(const std::vector<float>& embedding) {
+  long K = omegas.size();
+
+  float ref_value = center_value;
+  float ref_weight = 0;
+
+  for(long k = K - 1; k >= 0; --k) {
+    auto a = embedding[2*k];
+    auto b = embedding[2*k+1];
+    auto omega = omegas[k];
+    auto base_x = atan2(a, b) / omega;
+    auto period = 2 * M_PI / omega;
+    auto n_period = round((ref_value - base_x) / period);
+    auto x = base_x + period * n_period;
+    auto x_weight = omega*omega;
+    auto total_weight = ref_weight + x_weight;
+    cout << "k = "<<k << "\tx="<<x<< endl;
+
+    ref_value = ref_weight/total_weight*ref_value + x_weight/total_weight*x;
+    ref_weight = total_weight;
+  }
+
+  return ref_value;
 }

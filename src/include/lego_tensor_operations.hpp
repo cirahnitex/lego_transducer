@@ -671,27 +671,29 @@ namespace tg {
    * The embedding size is up to you, but if the embedding size is too small, it may affect the predictive power of the embedding vector. You can call tg::numerical_encoder_recommemded_D to compute a recommended embedding size.
    *
    * Note that the positional encoding used in Transformer is a special case, where
-   *  - range = 10000*PI, which is more than enough for the purpose of indexing tokens in a sentence
+   *  - range = [0, 10000*PI], which is more than enough for the purpose of indexing tokens in a sentence
    *  - epsilon = pow(10000,1/256), which roughly equals to 1
    *  - embedding size = 512
    *
-   * \param range The range of input numbers
+   * \param min_value The minimum value of input numbers
+   * \param max_value The maximum value of input numbers
    * \param eps The smallest differences between input numbers
    * \param D The output embedding size
    * \return A transducer that computes numerical encoding of
    */
-  transducer_model make_numerical_encoder(float range, float eps, unsigned long D);
+  transducer_model make_numerical_encoder(float min_value, float max_value, float eps, unsigned long D);
 
   /**
    * \brief Compute a recommended embedding size for your numerical encoder
    *
    * This function gives you a good recommendation of numerical encoder embedding size. Of course, giving more dimensions than recommemded is always better if you have the computational resources. However, giving less dimensions than recommended is at your own risk.
    *
-   * \param range The range of input numbers to numerical encode
+   * \param min_value The minimum value of input numbers
+   * \param max_value The maximum value of input numbers
    * \param eps The smallest differences between input numbers
    * \return A recommended embedding size.
    */
-  unsigned long numerical_encoder_recommemded_D(float range, float eps);
+  unsigned long numerical_encoder_recommended_D(float min_value, float max_value, float eps);
 
   /** @} */
 }

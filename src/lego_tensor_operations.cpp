@@ -287,10 +287,10 @@ value_t tg::softmax(const value_t& x, unsigned long axis) {
   return model(x);
 }
 
-transducer_model tg::make_numerical_encoder(float range, float eps, unsigned long D) {
-  return transducer_model(make_shared<transducer_variant>(numerical_encoding_op(range, eps, D)));
+transducer_model tg::make_numerical_encoder(float min_value, float max_value, float eps, unsigned long D) {
+  return transducer_model(make_shared<transducer_variant>(numerical_encoding_op(min_value, max_value, eps, D)));
 }
 
-unsigned long tg::numerical_encoder_recommemded_D(float range, float eps) {
-  return 2 * (unsigned long)std::ceil(std::log(range / (M_PI * eps)) + 1);
+unsigned long tg::numerical_encoder_recommended_D(float min_value, float max_value, float eps) {
+  return 2 * (unsigned long)std::ceil(std::log((max_value - min_value) / (M_PI * eps)) + 1);
 }
