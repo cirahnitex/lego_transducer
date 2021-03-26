@@ -24,6 +24,10 @@ void tg::training_pipeline::set_batch_size(unsigned long batch_size) {
   this->batch_size_m = batch_size;
 }
 
+void tg::training_pipeline::set_shuffle(bool should_shuffle) {
+  this->shuffle_m = should_shuffle;
+}
+
 tg::event_emitter<>::listener_handle_t
 tg::training_pipeline::add_before_training_example_listener(const tg::event_emitter<>::listener_t& listener) {
   return before_training_datum_listener_m.add_listener(listener);
@@ -317,8 +321,12 @@ void training_pipeline::train_and_validate_impl(const std::shared_ptr<const tran
 
   parallel_map_thread_pool workers(num_workers_m);
 
-
   auto batched_training_set = training_set->group_to_batch(batch_size_m);
+
+  if(shuffle_m) {
+    std::shuffle(batched_training_set.begin(), batched_training_set.end(), dynet::rndeng);
+  }
+
   auto batched_validation_set = validation_set->group_to_batch(batch_size_m);
 
   {

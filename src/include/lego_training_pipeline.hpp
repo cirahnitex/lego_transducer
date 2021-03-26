@@ -21,7 +21,7 @@ namespace tg {
    *
    * It provides simple interface that performs the following routines:
    *   - [optional] Group the dataset in batches
-   *   - [optional] Shuffle the (batched) dataset // todo: add shuffle functionality
+   *   - [optional] Shuffle the dataset
    *   - Spawn one or more training worker threads
    *   - Train on the training set for some epochs
    *   - [optional] After each epoch, validate the model against a given validation set
@@ -33,6 +33,7 @@ namespace tg {
     std::chrono::steady_clock::duration report_interval{std::chrono::seconds(10)};
     unsigned long num_workers_m{1};
     unsigned long batch_size_m{1};
+    bool shuffle_m{false};
     event_emitter<> epoch_completion_listener_m;
     event_emitter<> new_best_listener_m;
     event_emitter<> before_training_datum_listener_m;
@@ -120,6 +121,15 @@ namespace tg {
      * \param batch_size the new batch size
      */
     void set_batch_size(unsigned long batch_size);
+
+    /**
+     * \brief Enable/Disable shuffling
+     *
+     * If enabled, will shuffle all batches before training. (But the datum within a batch is not shuffled)
+     *
+     * \param should_shuffle Whether to enable shuffling
+     */
+    void set_shuffle(bool should_shuffle);
 
     /**
      * \brief Train a model on a training set.
