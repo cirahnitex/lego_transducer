@@ -207,6 +207,7 @@ namespace tg {
   transducer_model pow(make_shared<transducer_variant>(pow_op()));
   transducer_model log(make_shared<transducer_variant>(log_op()));
   transducer_model exp(make_shared<transducer_variant>(exp_op()));
+  transducer_model abs(make_shared<transducer_variant>(abs_op()));
   transducer_model pickneglogsigmoid(make_shared<transducer_variant>(pickneglogsigmoid_op()));
   transducer_model tensor_l2_norm(make_shared<transducer_variant>(tensor_l2_norm_op()));
   transducer_model tensor_squared_distance(make_shared<transducer_variant>(squared_distance_op()));

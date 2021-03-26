@@ -982,6 +982,15 @@ namespace tg {
     std::string default_name() const;
   };
 
+  class abs_op {
+  public:
+    template<typename Archive>
+    void serialize(Archive& ar) {
+    }
+    value_t transduce(const value_t& x);
+    std::string default_name() const;
+  };
+
   class squared_distance_op {
   public:
     template<typename Archive>

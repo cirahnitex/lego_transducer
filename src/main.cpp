@@ -16,20 +16,9 @@ int main() {
   cout << "initialize complete" << endl;
 
 
-  auto numerical_encoder = make_numerical_encoder(0, 10, 1, 8);
+  value_t x(tensor_t({-1,2,3}));
 
-  transducer_model distort_and_reconstruct([&](const value_placeholder& x)->value_placeholder {
-    return numerical_encoder(x + random_normal({8}, 0, 0.1));
-  });
-
-  for(unsigned i = 0; i< 10; ++i) {
-    tg::value_t x(tensor_t({(float)i}));
-
-    auto embedding = numerical_encoder(x);
-    cout << embedding << endl;
-    auto reconstructed = distort_and_reconstruct(embedding);
-    cout << reconstructed << endl;
-  }
+  cout << tg::abs(x) << endl;
 
 
 

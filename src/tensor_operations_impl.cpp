@@ -1050,3 +1050,23 @@ float numerical_encoding_op::inverse_op(const std::vector<float>& embedding) {
 
   return ref_value;
 }
+
+value_t abs_op::transduce(const value_t& x) {
+  return x.visit([&](auto&& v)->value_t {
+    constexpr auto t = value_t::static_type_info<decltype(v)>();
+
+    if constexpr (t.is_any_scalar) {
+      return value_t(std::abs((float)v));
+    }
+    else if constexpr (t.is_any_tensor) {
+      return value_t(dynet::abs(x.as_symbolic_tensor()));
+    }
+    stringstream ss;
+    ss << "Cannot invoke "<< default_name() << " on input of type "<< x.type_name();
+    throw_with_nested(std::runtime_error(ss.str()));
+  });
+}
+
+std::string abs_op::default_name() const {
+  return "abs";
+}

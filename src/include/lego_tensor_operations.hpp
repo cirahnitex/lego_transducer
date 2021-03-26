@@ -355,6 +355,16 @@ namespace tg {
   extern transducer_model pow;
 
   /**
+   * \brief Abs function
+   *
+   * Calculate elementwise abs function
+   *
+   * \param x The number to compute abs
+   * \return The abs value
+   */
+  extern transducer_model abs;
+
+  /**
    * \brief The L2 norm of a tensor
    *
    * \f$\sqrt{\sum_i x_i^2}\f$.
