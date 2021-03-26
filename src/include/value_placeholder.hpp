@@ -27,7 +27,7 @@ namespace tg {
      *
      * This value can be used to lookup the owner transducer while transducing.
      */
-    unsigned long owner_nesting_depth{};
+    unsigned long owner_nesting_depth{(unsigned long)-1};
 
     unsigned long value_idx{};
 
@@ -48,6 +48,15 @@ namespace tg {
     value_placeholder(value_placeholder&&) noexcept = default;
     value_placeholder& operator=(const value_placeholder&) = default;
     value_placeholder& operator=(value_placeholder&&) noexcept = default;
+
+    /**
+     * \brief If this value placeholder is valid.
+     *
+     * A value placeholder is not valid if it is default-constructed.
+     *
+     * \return If this value placeholder is valid or not.
+     */
+    [[nodiscard]] bool valid() const;
 
     /**
      * \brief Create value placeholder holding a constant value

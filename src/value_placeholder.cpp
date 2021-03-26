@@ -38,6 +38,10 @@ value_placeholder value_placeholder::constant(value_t x) {
   return lambda_transducer_model_construction_guard::top()->make_value_placeholder_from_constant(std::move(x));
 }
 
+bool tg::value_placeholder::valid() const {
+  return owner_nesting_depth != -1;
+}
+
 namespace tg {
   std::ostream& operator<<(std::ostream& os, const value_placeholder& vp) {
     return os << "[value placeholder] idx="<<vp.value_idx<< ", depth="<<vp.owner_nesting_depth;
