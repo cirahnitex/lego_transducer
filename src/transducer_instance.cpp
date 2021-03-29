@@ -198,7 +198,10 @@ scalar_t transducer_instance::apply_backward(const std::vector<value_t>& ins) {
       dynet_computation_graph::p()->backward(expr);
       dynet_computation_graph::discard();
       return loss_val;
-    } else {
+    } else if(ret.is_any_scalar()) {
+      return ret.as_float();
+    }
+    else {
       stringstream ss;
       ss << "Cannot perform backward computation because the transducer did not return a tensor of shape {1}. Got: "<<ret;
       throw_with_nested(std::runtime_error(ss.str()));
@@ -244,6 +247,8 @@ transducer_instance::dynamic_batch_backward(const std::vector<tg::dynamic_transd
       if (ret.is_symbolic_tensor() && ret.as_symbolic_tensor().dim().sum_dims() == 1) {
 
         losses.push_back(ret.as_symbolic_tensor());
+      } else if(ret.is_any_scalar()) {
+        losses.push_back(dynet::input(*dynet_computation_graph::p(), ret.as_float()));
       } else {
         stringstream ss;
         ss << "Cannot perform backward computation because the transducer did not return a tensor of shape {1}. Got: "<<ret;
@@ -295,6 +300,8 @@ scalar_t transducer_instance::batch_backward(const std::shared_ptr<const transdu
       if (ret.is_symbolic_tensor() && ret.as_symbolic_tensor().dim().sum_dims() == 1) {
 
         losses.push_back(ret.as_symbolic_tensor());
+      } else if (ret.is_any_scalar()) {
+        losses.push_back(dynet::input(*dynet_computation_graph::p(), ret.as_float()));
       } else {
         stringstream ss;
         ss << "Cannot perform backward computation because the transducer did not return a tensor of shape {1}. Got: "<<ret;

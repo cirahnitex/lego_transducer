@@ -324,7 +324,7 @@ void training_pipeline::train_and_validate_impl(const std::shared_ptr<const tran
   auto batched_training_set = training_set->group_to_batch(batch_size_m);
 
   if(shuffle_m) {
-    std::shuffle(batched_training_set.begin(), batched_training_set.end(), dynet::rndeng);
+    std::shuffle(batched_training_set.begin(), batched_training_set.end(), *dynet::rndeng);
   }
 
   auto batched_validation_set = validation_set->group_to_batch(batch_size_m);
